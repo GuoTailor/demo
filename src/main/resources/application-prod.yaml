@@ -1,0 +1,43 @@
+
+spring:
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/exchange
+    username: root
+    password: 2QM38wN@F82Z7rcSZ
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+  web:
+    resources:
+      static-locations: file:${fileUploadPath}, classpath:/static
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+logging:
+  level:
+#    org.springframework.r2dbc: DEBUG
+    com.exchange.mapper.TradingRecordMapper: DEBUG
+  file:
+    path: log
+  logback:
+    rolling-policy:
+      clean-history-on-start: true
+      max-history: 7
+
+server:
+  port: 8080
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    defaultModelExpandDepth: 4
+    validatorUrl: none
+    persistAuthorization: true
+    use-root-path: true
+    filter: true
+    enabled: false
+
+fileUploadPath: files
+ws: 'ws://hk.yufenghy.cn:8804/connect/json/7838E512B08C4C648582ABB728B04615'

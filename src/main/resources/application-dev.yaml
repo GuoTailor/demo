@@ -1,0 +1,42 @@
+
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/demo
+    username: postgres
+    password: admin
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+  web:
+    resources:
+      static-locations: file:${fileUploadPath}, classpath:/static
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+logging:
+  level:
+    org.springframework.r2dbc: DEBUG
+    com.exchange.mapper.TradingRecordMapper: DEBUG
+    io.asyncer.r2dbc.mysql.QUERY: DEBUG
+  file:
+    path: log
+  logback:
+    rolling-policy:
+      clean-history-on-start: true
+      max-history: 7
+
+server:
+  port: 8080
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    defaultModelExpandDepth: 4
+    validatorUrl: none
+    persistAuthorization: true
+    use-root-path: true
+    filter: true
+
+fileUploadPath: files
