@@ -10,7 +10,6 @@ import reactor.core.publisher.Hooks
 class DemoApplication
 
 fun main(args: Array<String>) {
-    Hooks.onOperatorDebug()
     val runApplication = runApplication<DemoApplication>(*args)
 
 }

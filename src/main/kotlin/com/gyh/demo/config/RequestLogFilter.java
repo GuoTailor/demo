@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.util.MultiValueMap;
@@ -23,7 +24,7 @@ import java.util.List;
 @Configuration
 public class RequestLogFilter implements WebFilter {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private final List<String> ignoreUrl = List.of("/trading/position", "/futures", "/trading/market");
+    private final List<String> ignoreUrl = List.of("/trading/position", "/futures", "/trading/market", "/room");
 
     @NotNull
     @Override
@@ -69,7 +70,8 @@ public class RequestLogFilter implements WebFilter {
                     // 打印路由 200 get: /api/xxx/xxx
                     responseLog.append("\n\n<=== {} {}: {}\n");
                     // 参数
-                    responseArgs.add(response.getStatusCode().value());
+                    HttpStatusCode statusCode = response.getStatusCode();
+                    responseArgs.add(statusCode == null ? "" : statusCode.value());
                     responseArgs.add(requestMethod);
                     responseArgs.add(requestUrl);
 

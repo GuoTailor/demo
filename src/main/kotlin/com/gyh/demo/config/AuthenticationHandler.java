@@ -145,6 +145,7 @@ public class AuthenticationHandler implements ServerAuthenticationSuccessHandler
                                 return;
                             }
                             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.get(0), "", user.get(0).getAuthorities());
+                            log.info("授权通过");
                             sink.next(new SecurityContextImpl(authentication));
                         });
             } catch (BadCredentialsException e) {

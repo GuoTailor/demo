@@ -1,13 +1,14 @@
 
 spring:
   r2dbc:
-    url: r2dbc:mysql://localhost:3306/exchange
+    url: r2dbc:mysql://aos-mysql.dev.svc.cluster.local:3306/test0111
     username: root
-    password: yhl0717wltdatabase
+    password: PhLBNTUgbJiiTYcwrt1O
   data:
     redis:
-      host: 127.0.0.1
+      host: aos-redis.paasdev.svc.cluster.local
       port: 6379
+      password: YFKUDeCWD1AL3pGnxHtVoAf3dcwcrTgL
   web:
     resources:
       static-locations: file:${fileUploadPath}, classpath:/static
@@ -39,4 +40,3 @@ springdoc:
     filter: true
 
 fileUploadPath: files
-ws: 'ws://hk.yufenghy.cn:8804/connect/json/60D169FFF5744878ABA46CDF96F1301E'

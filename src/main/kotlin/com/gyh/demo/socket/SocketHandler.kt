@@ -12,8 +12,9 @@ import com.gyh.demo.dto.ServiceRequestInfo
 import com.gyh.demo.dto.ServiceResponseInfo
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter
-import org.springframework.web.reactive.DispatcherHandler
+import org.springframework.http.MediaType
+import org.springframework.http.server.reactive.HttpHandler
+import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.web.reactive.socket.WebSocketHandler
 import org.springframework.web.reactive.socket.WebSocketSession
 import reactor.core.publisher.Mono
@@ -27,7 +28,7 @@ abstract class SocketHandler : WebSocketHandler {
     private val json = jacksonObjectMapper()
 
     @Autowired
-    private lateinit var dispatcherServlet: DispatcherHandler
+    private lateinit var httpHandler: HttpHandler
 
     init {
         val javaTimeModule = JavaTimeModule()
@@ -42,32 +43,26 @@ abstract class SocketHandler : WebSocketHandler {
         val sessionHandler = SessionHandler(session, json)
         sessionHandler.setSessionId(session.id)
         val input = session.receive()
-            .map { it.payloadAsText }
+            .map {
+                val toServiceRequestInfo = toServiceRequestInfo(it.payloadAsText)
+                it.payloadAsText
+            }
             .map(::toServiceRequestInfo)
             .filter { it.order != "/ping" }
             .filter { filterConfirm(it, sessionHandler) }
             .doOnNext(::printLog)
             .flatMap {
-//                DefaultServerWebExchangeBuilder
-//                dispatcherServlet.handle()
-
-
-                val resp = ServiceResponseInfo(req = it.req, order = NotifyOrder.requestReq)
-                logger.info("返回数据order:{} req:{} data:{}", resp.order, resp.req, it.body)
-                resp.data = Mono.just(it.body ?: "ok")
-//                dispatcherServlet.doDispatch(it, resp)
-                resp.getMono().onErrorResume { e ->
-                    logger.info("错误 {}", e.message)
-                    ServiceResponseInfo(
-                        ResponseInfo.failed<Unit>("错误 ${e.message}").toMono(),
-                        NotifyOrder.errorNotify,
-                        NotifyOrder.requestReq
-                    ).getMono()
-                }
+                val request = SocketServerHttpRequest
+                    .post(it.order)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(json.writeValueAsString(it.body))
+                val response = SocketServerHttpResponse()
+                response.req = it.req
+                httpHandler.handle(request, response).then(Mono.just(response))
             }
-            .flatMap { sessionHandler.send(it, true) }
+            .flatMap { sessionHandler.send(it.bodyAsString, it.req, NotifyOrder.requestReq, true) }
             .doOnTerminate { onDisconnected(sessionHandler) }
-            .then()//.log()
+            .then().log()
         val onCon = onConnect(sessionHandler)
         return Mono.zip(onCon, input).then()
     }

@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
  */
 public interface UserMapper extends R2dbcRepository<User, Integer> {
 
-    @Query("select * from \"user\" where username = :username")
+    @Query("select * from user where username = :username")
     Mono<User> findByUsername(String username);
 
     @Query("select role.* from role left join user_role ur on role.id = ur.role_id where user_id = :userId")

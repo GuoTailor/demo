@@ -62,6 +62,11 @@ class SessionHandler(private var session: WebSocketSession,  private val json: O
             .flatMap { send(it, confirm) }
     }
 
+    fun <T> send(data: Mono<T>, req: Int, order: Int, confirm: Boolean = false): Mono<Unit> {
+        return ServiceResponseInfo(data, req, order).getMono()
+            .flatMap { send(it, confirm) }
+    }
+
     fun <T : Any> send(data: T, order: Int, confirm: Boolean = false): Mono<Unit> {
         val req = responseCount.getAndIncrement()
         val msg = ServiceResponseInfo.DataResponse(data, req, order)
