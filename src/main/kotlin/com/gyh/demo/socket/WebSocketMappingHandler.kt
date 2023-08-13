@@ -1,6 +1,5 @@
 package com.gyh.demo.socket
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.AnnotationUtils

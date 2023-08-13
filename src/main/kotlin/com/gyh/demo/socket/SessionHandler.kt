@@ -48,7 +48,10 @@ class SessionHandler(private var session: WebSocketSession,  private val json: O
             responseMap[message.req] = SendInfo(message.req, cycle)
         }
         return session.send(Mono.defer {
-            val writeValueAsString = json.writeValueAsString(message)
+            val body = message.body.toString()
+            message.body = Any()
+            var writeValueAsString = json.writeValueAsString(message)
+            writeValueAsString = writeValueAsString.replace("{}", body)
             Mono.just(session.textMessage(writeValueAsString))
         }).then(Mono.just(Unit))
     }

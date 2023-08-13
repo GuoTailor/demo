@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.AnnotationUtils
+import org.springframework.http.codec.ServerCodecConfigurer
+import org.springframework.web.reactive.config.WebFluxConfigurationSupport
 import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping
 import org.springframework.web.reactive.socket.WebSocketHandler
 import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter
@@ -33,10 +35,15 @@ class WebSocketConfig {
             //webSocketMapping 映射到管理中
             handlerMap[Objects.requireNonNull(annotation)!!.value] = bean
         }
-        handler.setOrder(Ordered.HIGHEST_PRECEDENCE)
-        handler.setUrlMap(handlerMap)
+        handler.order = Ordered.HIGHEST_PRECEDENCE
+        handler.urlMap = handlerMap
         handler.initApplicationContext()
         return WebSocketHandlerAdapter()
     }
+
+    /*@Bean
+    fun nmka(serverCodeConfigurer: ServerCodecConfigurer, configuration: WebFluxConfigurationSupport) {
+        serverCodeConfigurer.defaultCodecs().serverSentEventEncoder()
+    }*/
 
 }

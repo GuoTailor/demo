@@ -123,4 +123,17 @@ public class User implements UserDetails {
         this.credentialsNonExpired = credentialsNonExpired;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                ", enable=" + enable +
+                ", name='" + name + '\'' +
+                ", createTime=" + createTime +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                '}';
+    }
 }

@@ -70,8 +70,7 @@ public class RequestLogFilter implements WebFilter {
                     // 打印路由 200 get: /api/xxx/xxx
                     responseLog.append("\n\n<=== {} {}: {}\n");
                     // 参数
-                    HttpStatusCode statusCode = response.getStatusCode();
-                    responseArgs.add(statusCode == null ? "" : statusCode.value());
+                    responseArgs.add(response.getStatusCode());
                     responseArgs.add(requestMethod);
                     responseArgs.add(requestUrl);
 
