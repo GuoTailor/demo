@@ -9,6 +9,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -51,6 +53,10 @@ public class WebFluxSecurityConfig {
                         ).permitAll()
                         .pathMatchers(HttpMethod.OPTIONS).permitAll()
                         .anyExchange().authenticated()
+                        .anyExchange().access((authentication, object) -> authentication
+                                .filter(it -> it == null || !AnonymousAuthenticationToken.class.isAssignableFrom(it.getClass()))
+                                .map(it -> new AuthorizationDecision(it.isAuthenticated()))
+                                .defaultIfEmpty(new AuthorizationDecision(false)))
                 )
                 .formLogin(form -> form
                         .authenticationSuccessHandler(authenticationHandler)

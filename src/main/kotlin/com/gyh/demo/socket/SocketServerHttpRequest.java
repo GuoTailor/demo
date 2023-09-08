@@ -39,9 +39,9 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
     private final Flux<DataBuffer> body;
 
     private SocketServerHttpRequest(HttpMethod httpMethod,
-                                  URI uri, @Nullable String contextPath, HttpHeaders headers, MultiValueMap<String, HttpCookie> cookies,
-                                  @Nullable InetSocketAddress localAddress, @Nullable InetSocketAddress remoteAddress,
-                                  @Nullable SslInfo sslInfo, Publisher<? extends DataBuffer> body) {
+                                    URI uri, @Nullable String contextPath, HttpHeaders headers, MultiValueMap<String, HttpCookie> cookies,
+                                    @Nullable InetSocketAddress localAddress, @Nullable InetSocketAddress remoteAddress,
+                                    @Nullable SslInfo sslInfo, Publisher<? extends DataBuffer> body) {
 
         super(httpMethod, uri, contextPath, headers);
         this.cookies = cookies;
@@ -92,8 +92,9 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
      * Create an HTTP GET builder with the given URI template. The given URI may
      * contain query parameters, or those may be added later via
      * {@link BaseBuilder#queryParam queryParam} builder methods.
+     *
      * @param urlTemplate a URL template; the resulting URL will be encoded
-     * @param uriVars zero or more URI variables
+     * @param uriVars     zero or more URI variables
      * @return the created builder
      */
     public static BaseBuilder<?> get(String urlTemplate, Object... uriVars) {
@@ -102,8 +103,9 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
 
     /**
      * HTTP HEAD variant. See {@link #get(String, Object...)} for general info.
+     *
      * @param urlTemplate a URL template; the resulting URL will be encoded
-     * @param uriVars zero or more URI variables
+     * @param uriVars     zero or more URI variables
      * @return the created builder
      */
     public static BaseBuilder<?> head(String urlTemplate, Object... uriVars) {
@@ -112,8 +114,9 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
 
     /**
      * HTTP POST variant. See {@link #get(String, Object...)} for general info.
+     *
      * @param urlTemplate a URL template; the resulting URL will be encoded
-     * @param uriVars zero or more URI variables
+     * @param uriVars     zero or more URI variables
      * @return the created builder
      */
     public static BodyBuilder post(String urlTemplate, Object... uriVars) {
@@ -123,8 +126,9 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
     /**
      * HTTP PUT variant. See {@link #get(String, Object...)} for general info.
      * {@link BaseBuilder#queryParam queryParam} builder methods.
+     *
      * @param urlTemplate a URL template; the resulting URL will be encoded
-     * @param uriVars zero or more URI variables
+     * @param uriVars     zero or more URI variables
      * @return the created builder
      */
     public static BodyBuilder put(String urlTemplate, Object... uriVars) {
@@ -133,8 +137,9 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
 
     /**
      * HTTP PATCH variant. See {@link #get(String, Object...)} for general info.
+     *
      * @param urlTemplate a URL template; the resulting URL will be encoded
-     * @param uriVars zero or more URI variables
+     * @param uriVars     zero or more URI variables
      * @return the created builder
      */
     public static BodyBuilder patch(String urlTemplate, Object... uriVars) {
@@ -143,8 +148,9 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
 
     /**
      * HTTP DELETE variant. See {@link #get(String, Object...)} for general info.
+     *
      * @param urlTemplate a URL template; the resulting URL will be encoded
-     * @param uriVars zero or more URI variables
+     * @param uriVars     zero or more URI variables
      * @return the created builder
      */
     public static BaseBuilder<?> delete(String urlTemplate, Object... uriVars) {
@@ -153,8 +159,9 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
 
     /**
      * HTTP OPTIONS variant. See {@link #get(String, Object...)} for general info.
+     *
      * @param urlTemplate a URL template; the resulting URL will be encoded
-     * @param uriVars zero or more URI variables
+     * @param uriVars     zero or more URI variables
      * @return the created builder
      */
     public static BaseBuilder<?> options(String urlTemplate, Object... uriVars) {
@@ -163,8 +170,9 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
 
     /**
      * Create a builder with the given HTTP method and a {@link URI}.
+     *
      * @param method the HTTP method (GET, POST, etc)
-     * @param url the URL
+     * @param url    the URL
      * @return the created builder
      */
     public static BodyBuilder method(HttpMethod method, URI url) {
@@ -177,9 +185,10 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
      * Alternative to {@link #method(HttpMethod, URI)} that accepts a URI template.
      * The given URI may contain query parameters, or those may be added later via
      * {@link BaseBuilder#queryParam queryParam} builder methods.
+     *
      * @param method the HTTP method (GET, POST, etc)
-     * @param uri the URI template for the target URL
-     * @param vars variables to expand into the template
+     * @param uri    the URI template for the target URL
+     * @param vars   variables to expand into the template
      * @return the created builder
      */
     public static BodyBuilder method(HttpMethod method, String uri, Object... vars) {
@@ -189,9 +198,10 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
     /**
      * Create a builder with a raw HTTP method value that is outside the
      * range of {@link HttpMethod} enum values.
+     *
      * @param httpMethod the HTTP methodValue value
-     * @param uri the URI template for target the URL
-     * @param vars variables to expand into the template
+     * @param uri        the URI template for target the URL
+     * @param vars       variables to expand into the template
      * @return the created builder
      * @since 5.2.7
      * @deprecated as of Spring Framework 6.0 in favor of {@link #method(HttpMethod, String, Object...)}
@@ -209,6 +219,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
 
     /**
      * Request builder exposing properties not related to the body.
+     *
      * @param <B> the builder subclass
      */
     public interface BaseBuilder<B extends BaseBuilder<B>> {
@@ -223,7 +234,8 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
          * If no values are given, the resulting URI will contain the query
          * parameter name only (i.e. {@code ?foo} instead of {@code ?foo=bar}).
          * <p>The provided query name and values will be encoded.
-         * @param name the query parameter name
+         *
+         * @param name   the query parameter name
          * @param values the query parameter values
          * @return this UriComponentsBuilder
          */
@@ -232,6 +244,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
         /**
          * Add the given query parameters and values. The provided query name
          * and corresponding values will be encoded.
+         *
          * @param params the params
          * @return this UriComponentsBuilder
          */
@@ -244,6 +257,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
 
         /**
          * Set the local address to return.
+         *
          * @since 5.2.3
          */
         B localAddress(InetSocketAddress localAddress);
@@ -260,13 +274,15 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
 
         /**
          * Add the given cookies.
+         *
          * @param cookies the cookies.
          */
         B cookies(MultiValueMap<String, HttpCookie> cookies);
 
         /**
          * Add the given, single header value under the given name.
-         * @param headerName  the header name
+         *
+         * @param headerName   the header name
          * @param headerValues the header value(s)
          * @see HttpHeaders#add(String, String)
          */
@@ -274,6 +290,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
 
         /**
          * Add the given header values.
+         *
          * @param headers the header values
          */
         B headers(MultiValueMap<String, String> headers);
@@ -281,6 +298,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
         /**
          * Set the list of acceptable {@linkplain MediaType media types}, as
          * specified by the {@code Accept} header.
+         *
          * @param acceptableMediaTypes the acceptable media types
          */
         B accept(MediaType... acceptableMediaTypes);
@@ -288,6 +306,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
         /**
          * Set the list of acceptable {@linkplain Charset charsets}, as specified
          * by the {@code Accept-Charset} header.
+         *
          * @param acceptableCharsets the acceptable charsets
          */
         B acceptCharset(Charset... acceptableCharsets);
@@ -295,6 +314,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
         /**
          * Set the list of acceptable {@linkplain Locale locales}, as specified
          * by the {@code Accept-Languages} header.
+         *
          * @param acceptableLocales the acceptable locales
          */
         B acceptLanguageAsLocales(Locale... acceptableLocales);
@@ -303,6 +323,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
          * Set the value of the {@code If-Modified-Since} header.
          * <p>The date should be specified as the number of milliseconds since
          * January 1, 1970 GMT.
+         *
          * @param ifModifiedSince the new value of the header
          */
         B ifModifiedSince(long ifModifiedSince);
@@ -311,6 +332,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
          * Set the (new) value of the {@code If-Unmodified-Since} header.
          * <p>The date should be specified as the number of milliseconds since
          * January 1, 1970 GMT.
+         *
          * @param ifUnmodifiedSince the new value of the header
          * @see HttpHeaders#setIfUnmodifiedSince(long)
          */
@@ -318,12 +340,14 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
 
         /**
          * Set the values of the {@code If-None-Match} header.
+         *
          * @param ifNoneMatches the new value of the header
          */
         B ifNoneMatch(String... ifNoneMatches);
 
         /**
          * Set the (new) value of the Range header.
+         *
          * @param ranges the HTTP ranges
          * @see HttpHeaders#setRange(List)
          */
@@ -331,6 +355,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
 
         /**
          * Builds the request with no body.
+         *
          * @return the request
          * @see BodyBuilder#body(Publisher)
          * @see BodyBuilder#body(String)
@@ -347,6 +372,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
         /**
          * Set the length of the body in bytes, as specified by the
          * {@code Content-Length} header.
+         *
          * @param contentLength the content length
          * @return this builder
          * @see HttpHeaders#setContentLength(long)
@@ -356,6 +382,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
         /**
          * Set the {@linkplain MediaType media type} of the body, as specified
          * by the {@code Content-Type} header.
+         *
          * @param contentType the content type
          * @return this builder
          * @see HttpHeaders#setContentType(MediaType)
@@ -364,6 +391,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
 
         /**
          * Set the body of the request and build it.
+         *
          * @param body the body
          * @return the built request entity
          */
@@ -373,6 +401,7 @@ public class SocketServerHttpRequest extends AbstractServerHttpRequest {
          * Set the body of the request and build it.
          * <p>The String is assumed to be UTF-8 encoded unless the request has a
          * "content-type" header with a charset attribute.
+         *
          * @param body the body as text
          * @return the built request entity
          */

@@ -18,6 +18,7 @@ import org.springframework.http.server.reactive.HttpHandler
 import org.springframework.web.reactive.socket.WebSocketHandler
 import org.springframework.web.reactive.socket.WebSocketMessage
 import org.springframework.web.reactive.socket.WebSocketSession
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.time.LocalDateTime
 
@@ -54,7 +55,7 @@ abstract class SocketHandler : WebSocketHandler {
                 val request = SocketServerHttpRequest
                     .post(it.order)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(json.writeValueAsString(it.body))
+                    .body(Flux.just(it.message.payload.factory().wrap(json.writeValueAsBytes(it.body))))
                 val response = SocketServerHttpResponse(it.message.payload.factory())
                 response.req = it.req
                 response.statusCode = HttpStatus.OK

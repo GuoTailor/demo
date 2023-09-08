@@ -8,7 +8,6 @@ import org.springframework.web.reactive.socket.WebSocketSession
 import reactor.core.Disposable
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import reactor.core.publisher.Sinks
 import java.time.Duration
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
@@ -16,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger
 /**
  * Created by gyh on 2021/7/9
  */
-class SessionHandler(private var session: WebSocketSession,  private val json: ObjectMapper) {
+class SessionHandler(private var session: WebSocketSession, private val json: ObjectMapper) {
     private val logger = LoggerFactory.getLogger(this.javaClass)
     private val responseCount = AtomicInteger(1)
     private val responseMap = ConcurrentHashMap<Int, SendInfo>()
@@ -39,7 +38,10 @@ class SessionHandler(private var session: WebSocketSession,  private val json: O
                         Mono.just(message)
                     } else {
                         session.send(Mono.defer {
-                            val writeValueAsString = json.writeValueAsString(message)
+                            val body = message.body.toString()
+                            message.body = Any()
+                            var writeValueAsString = json.writeValueAsString(message)
+                            writeValueAsString = writeValueAsString.replace("{}", body)
                             Mono.just(session.textMessage(writeValueAsString))
                         })
                     }
